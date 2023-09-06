@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "/Soy6tR3oGOUQmdX9CjJReMUuZwisRCahDeo4nncXZ4MAfRCLoJctQ0o1VCDpHATfMgG53bur+vkCDqZhfAHfw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\SHAFEEQ\\Desktop\\myProject\\parking\\parking\\parking.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\SHAFEEQ\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\SHAFEEQ\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\SHAFEEQ\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "C:\\Users\\SHAFEEQ\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "C:\\Users\\SHAFEEQ\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "C:\\Users\\SHAFEEQ\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.5.0\\swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
