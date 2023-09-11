@@ -2,71 +2,70 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ParkingSystem.Model;
-using System;
 
 namespace ParkingSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class ParkingSpaceController : ControllerBase
     {
         private readonly ParkingContext _context;
-        public UserController(ParkingContext context)
+        public ParkingSpaceController(ParkingContext context)
         {
             _context = context;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        public async Task<ActionResult<IEnumerable<ParkingSpace>>> GetParkingSpace()
         {
-            var user = _context.Users.Where(p => p.Active == "A");
-            if (user == null)
+            var space = _context.ParkingSpaces.Where(p => p.Active == "A");
+            if (space == null)
             {
                 return NotFound();
             }
             else
             {
-                return await user.ToListAsync();
+                return await space.ToListAsync();
             }
-           
+
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<User>>>GetUserSingle(int id)
+        public async Task<ActionResult<IEnumerable<ParkingSpace>>> GetParkingSpaceSingle(int id)
         {
-            var user = _context.Users.Where(p => id == p.UserId && p.Active == "A");
-            if (user == null)
+            var space = _context.ParkingSpaces.Where(p => id == p.SpaceId && p.Active == "A");
+            if (space == null)
             {
                 return NotFound();
             }
             else
             {
-                return await user.ToListAsync();
+                return await space.ToListAsync();
             }
 
         }
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<ParkingSpace>> PostSpace(ParkingSpace space)
         {
-            user.Active = "A";
-            _context.Users.Add(user);
+            space.Active = "A";
+            _context.ParkingSpaces.Add(space);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
+            return CreatedAtAction(nameof(GetParkingSpace), new { id = space.SpaceId }, space);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> PutUser(int id, User user)
+        public async Task<ActionResult<ParkingSpace>> PutSpace(int id, ParkingSpace space)
         {
-            if (id != user.UserId)
+            if (id != space.LotId)
             {
                 return BadRequest();
             }
-            user.Active = "A";
-            _context.Entry(user).State = EntityState.Modified;
+            space.Active = "A";
+            _context.Entry(space).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserAvailable(id))
+                if (!SpaceAvailable(id))
                 {
                     return NotFound();
                 }
@@ -77,27 +76,27 @@ namespace ParkingSystem.Controllers
             }
             return Ok();
         }
-        private bool UserAvailable(int id)
+        private bool SpaceAvailable(int id)
         {
-            return (_context.Users?.Any(x => x.UserId == id)).GetValueOrDefault();
+            return (_context.ParkingSpaces?.Any(x => x.SpaceId == id)).GetValueOrDefault();
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> Delete(int id, User user)
+        public async Task<ActionResult<ParkingSpace>> DeleteSpace(int id, ParkingSpace space)
         {
-            if (id != user.UserId)
+            if (id != space.LotId)
             {
                 return BadRequest();
             }
-            user.Active = "D";
-            _context.Entry(user).State = EntityState.Modified;
+            space.Active = "D";
+            _context.Entry(space).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserAvailable(id))
+                if (!SpaceAvailable(id))
                 {
                     return NotFound();
                 }
@@ -110,4 +109,3 @@ namespace ParkingSystem.Controllers
         }
     }
 }
-

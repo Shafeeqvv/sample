@@ -88,10 +88,10 @@ namespace ParkingSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EntryTimestamp")
+                    b.Property<DateTime?>("EntryTimestamp")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ExitTimestamp")
+                    b.Property<DateTime?>("ExitTimestamp")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("LotId")
@@ -136,8 +136,8 @@ namespace ParkingSystem.Migrations
                     b.Property<float>("DiscountApplied")
                         .HasColumnType("real");
 
-                    b.Property<float>("Duration")
-                        .HasColumnType("real");
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("time");
 
                     b.Property<DateTime>("EntryTimestamp")
                         .HasColumnType("datetime2");
