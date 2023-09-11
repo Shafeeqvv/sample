@@ -2,71 +2,70 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ParkingSystem.Model;
-using System;
 
 namespace ParkingSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class ParkingLotsController : ControllerBase
     {
         private readonly ParkingContext _context;
-        public UserController(ParkingContext context)
+        public ParkingLotsController(ParkingContext context)
         {
             _context = context;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        public async Task<ActionResult<IEnumerable<ParkingLots>>> GetParkingLots()
         {
-            var user = _context.Users.Where(p => p.Active == "A");
-            if (user == null)
+            var lots = _context.ParkingLots.Where(p => p.Active == "A");
+            if (lots == null)
             {
                 return NotFound();
             }
             else
             {
-                return await user.ToListAsync();
+                return await lots.ToListAsync();
             }
-           
+
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<User>>>GetUserSingle(int id)
+        public async Task<ActionResult<IEnumerable<ParkingLots>>> GetParkingLotsSingle(int id)
         {
-            var user = _context.Users.Where(p => id == p.UserId && p.Active == "A");
-            if (user == null)
+            var lots = _context.ParkingLots.Where(p =>id==p.LotId&&p.Active == "A");
+            if (lots == null)
             {
                 return NotFound();
             }
             else
             {
-                return await user.ToListAsync();
+                return await lots.ToListAsync();
             }
 
         }
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<ParkingLots>> PostLots(ParkingLots lots)
         {
-            user.Active = "A";
-            _context.Users.Add(user);
+            lots.Active = "A";
+            _context.ParkingLots.Add(lots);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
+            return CreatedAtAction(nameof(GetParkingLots), new { id = lots.LotId }, lots);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> PutUser(int id, User user)
+        public async Task<ActionResult<ParkingLots>> PutLots(int id, ParkingLots lots)
         {
-            if (id != user.UserId)
+            if (id != lots.LotId)
             {
                 return BadRequest();
             }
-            user.Active = "A";
-            _context.Entry(user).State = EntityState.Modified;
+            lots.Active = "A";
+            _context.Entry(lots).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserAvailable(id))
+                if (!lotsAvailable(id))
                 {
                     return NotFound();
                 }
@@ -77,27 +76,27 @@ namespace ParkingSystem.Controllers
             }
             return Ok();
         }
-        private bool UserAvailable(int id)
+        private bool lotsAvailable(int id)
         {
-            return (_context.Users?.Any(x => x.UserId == id)).GetValueOrDefault();
+            return (_context.ParkingLots?.Any(x => x.LotId == id)).GetValueOrDefault();
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> Delete(int id, User user)
+        public async Task<ActionResult<ParkingLots>> DeleteLots(int id, ParkingLots lots)
         {
-            if (id != user.UserId)
+            if (id != lots.LotId)
             {
                 return BadRequest();
             }
-            user.Active = "D";
-            _context.Entry(user).State = EntityState.Modified;
+            lots.Active = "D";
+            _context.Entry(lots).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserAvailable(id))
+                if (!lotsAvailable(id))
                 {
                     return NotFound();
                 }
@@ -108,6 +107,6 @@ namespace ParkingSystem.Controllers
             }
             return Ok();
         }
+
     }
 }
-

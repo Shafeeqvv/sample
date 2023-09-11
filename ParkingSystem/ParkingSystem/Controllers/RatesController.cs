@@ -2,71 +2,72 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ParkingSystem.Model;
-using System;
 
 namespace ParkingSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class RatesController : ControllerBase
     {
+
         private readonly ParkingContext _context;
-        public UserController(ParkingContext context)
+        public RatesController(ParkingContext context)
         {
             _context = context;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        public async Task<ActionResult<IEnumerable<Rates>>> GetRates()
         {
-            var user = _context.Users.Where(p => p.Active == "A");
-            if (user == null)
+            var rates = _context.Rates.Where(p => p.Active == "A");
+            if (rates == null)
             {
                 return NotFound();
             }
             else
             {
-                return await user.ToListAsync();
+                return await rates.ToListAsync();
             }
-           
+
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<User>>>GetUserSingle(int id)
+        public async Task<ActionResult<IEnumerable<Rates>>> GetRates(int id)
         {
-            var user = _context.Users.Where(p => id == p.UserId && p.Active == "A");
-            if (user == null)
+            var rate = _context.Rates.Where(p => id == p.RateId && p.Active == "A");
+            if (rate == null)
             {
                 return NotFound();
             }
             else
             {
-                return await user.ToListAsync();
+                return await rate.ToListAsync();
             }
 
         }
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Rates>> PostRates(Rates rate)
         {
-            user.Active = "A";
-            _context.Users.Add(user);
+            rate.Active = "A";
+            _context.Rates.Add(rate);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
+            return CreatedAtAction(nameof(GetRates), new { id = rate.RateId }, rate);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> PutUser(int id, User user)
+        public async Task<ActionResult<Rates>> PutRates(int id, Rates rate)
+
         {
-            if (id != user.UserId)
+            if (id != rate.RateId)
             {
                 return BadRequest();
             }
-            user.Active = "A";
-            _context.Entry(user).State = EntityState.Modified;
+            rate.Active = "A";
+            _context.Entry(rate).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserAvailable(id))
+                if (!RateAvailable(id))
                 {
                     return NotFound();
                 }
@@ -77,27 +78,27 @@ namespace ParkingSystem.Controllers
             }
             return Ok();
         }
-        private bool UserAvailable(int id)
+        private bool RateAvailable(int id)
         {
-            return (_context.Users?.Any(x => x.UserId == id)).GetValueOrDefault();
+            return (_context.Rates?.Any(x => x.RateId == id)).GetValueOrDefault();
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> Delete(int id, User user)
+        public async Task<ActionResult<ParkingTransactions>> DeleteRates(int id, Rates rate)
         {
-            if (id != user.UserId)
+            if (id != rate.RateId)
             {
                 return BadRequest();
             }
-            user.Active = "D";
-            _context.Entry(user).State = EntityState.Modified;
+            rate.Active = "D";
+            _context.Entry(rate).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserAvailable(id))
+                if (!RateAvailable(id))
                 {
                     return NotFound();
                 }
@@ -110,4 +111,3 @@ namespace ParkingSystem.Controllers
         }
     }
 }
-

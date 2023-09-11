@@ -1,15 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Data.SqlTypes;
 
 namespace ParkingSystem.Model
 {
+
     public class Rates
     {
         [Key]
         public int RateId { get; set; }
         [ForeignKey("ParkingLots")]
         public int LotId { get; set; }
-        public virtual ParkingLots ParkingLots { get; set; } = null!;
+        public virtual ParkingLots? ParkingLots { get; set; } 
         public int RateType { get; set; }
         public string StartTime { get; set; } = null!;
         public string EndTime { get; set; } = null!;
